@@ -1,0 +1,58 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/exercisesInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Lista de exercícios (separados por vírgula)"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/exerciseTimeInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tempo de execução (segundos)"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/restTimeInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tempo de descanso (segundos)"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/roundIntervalInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Intervalo entre rodadas (segundos)"
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/roundsInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Número de rodadas"
+            android:inputType="number" />
+
+        <CheckBox
+            android:id="@+id/randomOrderCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Exercícios aleatórios" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Salvar Configurações" />
+    </LinearLayout>
+</ScrollView>

@@ -1,58 +1,103 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <!-- Lista de Exercícios -->
         <EditText
             android:id="@+id/exercisesInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/light_gray"
+            android:gravity="top|start"
             android:hint="Lista de exercícios (separados por vírgula)"
-            android:inputType="text" />
+            android:inputType="textMultiLine"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
+        <!-- Tempo de Execução -->
         <EditText
             android:id="@+id/exerciseTimeInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/light_gray"
             android:hint="Tempo de execução (segundos)"
-            android:inputType="number" />
+            android:inputType="number"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
+        <!-- Tempo de Descanso -->
         <EditText
             android:id="@+id/restTimeInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/light_gray"
             android:hint="Tempo de descanso (segundos)"
-            android:inputType="number" />
+            android:inputType="number"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
+        <!-- Intervalo entre Rodadas -->
         <EditText
             android:id="@+id/roundIntervalInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/light_gray"
             android:hint="Intervalo entre rodadas (segundos)"
-            android:inputType="number" />
+            android:inputType="number"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
+        <!-- Número de Rodadas -->
         <EditText
             android:id="@+id/roundsInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/light_gray"
             android:hint="Número de rodadas"
-            android:inputType="number" />
+            android:inputType="number"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
+        <!-- CheckBox para Exercícios Aleatórios -->
         <CheckBox
             android:id="@+id/randomOrderCheckbox"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Exercícios aleatórios" />
+            android:layout_marginBottom="16dp"
+            android:padding="12dp"
+            android:text="Exercícios aleatórios"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
+        <!-- Botão Salvar Configurações -->
         <Button
             android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Salvar Configurações" />
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/blue_500"
+            android:padding="16dp"
+            android:text="Salvar Configurações"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
     </LinearLayout>
 </ScrollView>

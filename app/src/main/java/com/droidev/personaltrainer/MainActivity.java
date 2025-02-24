@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         new CountDownTimer(10000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                timerTextView.setText("Iniciando em " + (millisUntilFinished / 1000));
+                timerTextView.setText(String.valueOf(millisUntilFinished / 1000));
             }
 
             @Override

@@ -87,16 +87,40 @@ public class WorkoutSetsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            public void onChildDraw(
+                    @NonNull Canvas c,
+                    @NonNull RecyclerView recyclerView,
+                    @NonNull RecyclerView.ViewHolder viewHolder,
+                    float dX,
+                    float dY,
+                    int actionState,
+                    boolean isCurrentlyActive
+            ) {
                 View itemView = viewHolder.itemView;
                 Paint paint = new Paint();
+                Paint textPaint = new Paint();
+                textPaint.setColor(Color.WHITE); // Cor do texto
+                textPaint.setTextSize(40); // Tamanho do texto
+                textPaint.setTextAlign(Paint.Align.CENTER); // Alinhamento do texto
 
                 if (dX > 0) {
-                    paint.setColor(Color.parseColor("#388E3C"));
+                    // Swipe para a direita (Editar)
+                    paint.setColor(Color.parseColor("#388E3C")); // Verde
                     c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom(), paint);
-                } else {
-                    paint.setColor(Color.parseColor("#D32F2F"));
+
+                    // Desenha o texto "Editar"
+                    float textX = itemView.getLeft() + (dX / 2);
+                    float textY = itemView.getTop() + ((itemView.getBottom() - itemView.getTop()) / 2) + 15; // Centraliza verticalmente
+                    c.drawText("Editar", textX, textY, textPaint);
+                } else if (dX < 0) {
+                    // Swipe para a esquerda (Apagar)
+                    paint.setColor(Color.parseColor("#D32F2F")); // Vermelho
                     c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom(), paint);
+
+                    // Desenha o texto "Apagar"
+                    float textX = itemView.getRight() + (dX / 2);
+                    float textY = itemView.getTop() + ((itemView.getBottom() - itemView.getTop()) / 2) + 15; // Centraliza verticalmente
+                    c.drawText("Apagar", textX, textY, textPaint);
                 }
 
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

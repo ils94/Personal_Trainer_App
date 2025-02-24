@@ -71,8 +71,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSettings() {
-        String exercisesText = sharedPreferences.getString("exercises", "Exercício 1, Exercício 2");
-        exercises = new ArrayList<>(Arrays.asList(exercisesText.split(",")));
+        String selectedSet = sharedPreferences.getString("selectedSet", "");
+        if (!selectedSet.isEmpty()) {
+            exercises = new ArrayList<>(Arrays.asList(selectedSet.split(",")));
+        } else {
+            String exercisesText = sharedPreferences.getString("exercises", "Exercício 1, Exercício 2");
+            exercises = new ArrayList<>(Arrays.asList(exercisesText.split(",")));
+        }
         exerciseTime = sharedPreferences.getInt("exerciseTime", 30);
         restTime = sharedPreferences.getInt("restTime", 10);
         roundInterval = sharedPreferences.getInt("roundInterval", 20);
@@ -323,8 +328,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
-            startActivity(new Intent(this, ConfigActivity.class));
+        if (item.getItemId() == R.id.action_workout_sets) {
+            startActivity(new Intent(this, WorkoutSetsActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

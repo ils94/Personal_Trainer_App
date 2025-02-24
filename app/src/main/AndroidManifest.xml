@@ -13,6 +13,9 @@
         android:theme="@style/Theme.PersonalTrainer"
         tools:targetApi="31">
         <activity
+            android:name=".WorkoutSetsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ConfigActivity"
             android:exported="false" />
         <activity

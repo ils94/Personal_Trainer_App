@@ -1,6 +1,7 @@
 package com.droidev.personaltrainer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
@@ -10,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ConfigActivity extends AppCompatActivity {
 
     private EditText exercisesInput, exerciseTimeInput, restTimeInput, roundIntervalInput, roundsInput;
@@ -17,6 +21,7 @@ public class ConfigActivity extends AppCompatActivity {
     private Button saveButton;
 
     private SharedPreferences sharedPreferences;
+    private String workoutSetToEdit; // Conjunto que está sendo editado
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +40,16 @@ public class ConfigActivity extends AppCompatActivity {
         // Inicializa o SharedPreferences
         sharedPreferences = getSharedPreferences("WorkoutPrefs", Context.MODE_PRIVATE);
 
-        // Carrega as configurações salvas
-        exercisesInput.setText(sharedPreferences.getString("exercises", ""));
+        // Verifica se há um conjunto para edição
+        Intent intent = getIntent();
+        if (intent.hasExtra("workoutSet")) {
+            workoutSetToEdit = intent.getStringExtra("workoutSet");
+            exercisesInput.setText(workoutSetToEdit);
+        } else {
+            // Carrega as configurações salvas (se não estiver editando)
+            exercisesInput.setText(sharedPreferences.getString("exercises", ""));
+        }
+
         exerciseTimeInput.setText(String.valueOf(sharedPreferences.getInt("exerciseTime", 30)));
         restTimeInput.setText(String.valueOf(sharedPreferences.getInt("restTime", 10)));
         roundIntervalInput.setText(String.valueOf(sharedPreferences.getInt("roundInterval", 20)));
@@ -70,9 +83,19 @@ public class ConfigActivity extends AppCompatActivity {
                 editor.putInt("roundInterval", roundInterval);
                 editor.putInt("rounds", rounds);
                 editor.putBoolean("randomOrder", randomOrderCheckbox.isChecked());
+
+                // Atualiza a lista de conjuntos
+                Set<String> sets = sharedPreferences.getStringSet("workoutSets", new HashSet<>());
+                if (workoutSetToEdit != null) {
+                    sets.remove(workoutSetToEdit); // Remove o conjunto antigo (se estiver editando)
+                }
+                sets.add(exercisesText); // Adiciona o novo conjunto
+                editor.putStringSet("workoutSets", sets);
+
                 editor.apply();
 
                 Toast.makeText(this, "Configurações salvas!", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
                 finish(); // Fecha a tela de configuração
 
             } catch (NumberFormatException e) {

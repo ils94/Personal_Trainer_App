@@ -33,6 +33,8 @@ public class ConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
 
+        setTitle("Adicionar/Editar Conjunto");
+
         // Inicializa os componentes da UI
         exercisesInput = findViewById(R.id.exercisesInput);
         exerciseTimeInput = findViewById(R.id.exerciseTimeInput);

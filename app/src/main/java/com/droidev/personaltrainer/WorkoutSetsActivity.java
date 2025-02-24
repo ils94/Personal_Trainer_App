@@ -1,6 +1,7 @@
 package com.droidev.personaltrainer;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,6 +38,8 @@ public class WorkoutSetsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout_sets);
+
+        setTitle("Conjunto de Exercícios");
 
         setsRecyclerView = findViewById(R.id.setsRecyclerView);
         addSetButton = findViewById(R.id.addSetButton);
@@ -69,15 +73,28 @@ public class WorkoutSetsActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition();
-                String workoutSet = workoutSets.get(position);
+                final int position = viewHolder.getAdapterPosition();
+                final String workoutSet = workoutSets.get(position);
 
                 if (direction == ItemTouchHelper.LEFT) {
-                    // Remover item
-                    workoutSets.remove(position);
-                    adapter.removeItem(position);
-                    saveWorkoutSets(); // Salvar alterações
-                    Toast.makeText(WorkoutSetsActivity.this, "Conjunto removido: " + workoutSet, Toast.LENGTH_SHORT).show();
+                    // Mostrar caixa de diálogo de confirmação
+                    new AlertDialog.Builder(WorkoutSetsActivity.this)
+                            .setTitle("Remover Conjunto")
+                            .setMessage("Tem certeza que deseja remover o conjunto: " + workoutSet + "?")
+                            .setCancelable(false)
+                            .setPositiveButton("Sim", (dialog, which) -> {
+                                // Remover item após confirmação
+                                workoutSets.remove(position);
+                                adapter.removeItem(position);
+                                saveWorkoutSets(); // Salvar alterações
+                                Toast.makeText(WorkoutSetsActivity.this, "Conjunto removido: " + workoutSet, Toast.LENGTH_SHORT).show();
+                            })
+                            .setNegativeButton("Cancelar", (dialog, which) -> {
+                                // Cancelar a ação e reverter o swipe
+                                adapter.notifyItemChanged(position);
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert) // Ícone de alerta
+                            .show();
                 } else if (direction == ItemTouchHelper.RIGHT) {
                     // Editar item
                     Intent intent = new Intent(WorkoutSetsActivity.this, ConfigActivity.class);

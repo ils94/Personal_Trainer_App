@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private TextView timerTextView;
     private Button startButton, pauseButton, stopButton;
-    private CountDownTimer countDownTimer;
+    private CountDownTimer countDownTimer, initialCountDownTimer;
     private TextToSpeech textToSpeech;
     private ArrayList<String> exercises;
     private int exerciseTime, restTime, roundInterval, rounds;
@@ -83,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startWorkout() {
-        if (countDownTimer != null) return; // Evita múltiplos timers
+        if (countDownTimer != null) return;
+
         startButton.setEnabled(false);
         pauseButton.setEnabled(true);
         currentRound = 0;
@@ -93,8 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         speak("Iniciando em 10 segundos!");
 
-        // Contagem regressiva inicial (10 segundos)
-        new CountDownTimer(10000, 1000) {
+        initialCountDownTimer = new CountDownTimer(10000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timerTextView.setText(String.valueOf(millisUntilFinished / 1000));
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             timerTextView.setText("Treino Finalizado!");
             startButton.setEnabled(true);
             countDownTimer = null;
+            initialCountDownTimer = null;
             return;
         }
 
@@ -247,21 +249,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopWorkout() {
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-            countDownTimer = null;
-        }
-        currentRound = 0;
-        currentExerciseIndex = 0;
-        timeRemaining = 0;
-        timerTextView.setText("0");
-        startButton.setEnabled(true);
-        pauseButton.setText("Pausar");
-        isPaused = false;
+        // Cria um AlertDialog para confirmar se o usuário realmente deseja parar o treino
+        new AlertDialog.Builder(this)
+                .setTitle("Parar Treino")
+                .setMessage("Tem certeza de que deseja parar o treino?")
+                .setPositiveButton("Sim", (dialog, which) -> {
+                    // Se o usuário confirmar, executa o código para parar o treino
+                    if (countDownTimer != null) {
+                        countDownTimer.cancel();
+                        countDownTimer = null;
+                    }
+
+                    if (initialCountDownTimer != null) {
+                        initialCountDownTimer.cancel();
+                        initialCountDownTimer = null;
+                    }
+
+                    currentRound = 0;
+                    currentExerciseIndex = 0;
+                    timeRemaining = 0;
+                    timerTextView.setText("0");
+                    startButton.setEnabled(true);
+                    pauseButton.setText("Pausar");
+                    isPaused = false;
+                })
+                .setNegativeButton("Não", (dialog, which) -> {
+                    // Se o usuário cancelar, não faz nada e fecha o diálogo
+                    dialog.dismiss();
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     private void speak(String text) {
-        if (textToSpeech != null && textToSpeech.getEngines().size() > 0) {
+        if (textToSpeech != null && !textToSpeech.getEngines().isEmpty()) {
             textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
         }
     }
@@ -274,6 +295,16 @@ public class MainActivity extends AppCompatActivity {
             textToSpeech.shutdown();
             countDownTimer.cancel();
             countDownTimer = null;
+        }
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+
+        if (initialCountDownTimer != null) {
+            initialCountDownTimer.cancel();
+            initialCountDownTimer = null;
         }
     }
 

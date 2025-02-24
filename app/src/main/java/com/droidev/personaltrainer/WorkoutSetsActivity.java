@@ -44,7 +44,20 @@ public class WorkoutSetsActivity extends AppCompatActivity {
         loadWorkoutSets(); // Carregar os exercícios salvos
 
         setsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new WorkoutSetsAdapter(this, workoutSets);
+        adapter = new WorkoutSetsAdapter(this, workoutSets, position -> {
+            String selectedSet = workoutSets.get(position); // Obtém o conjunto selecionado
+
+            // Salva o conjunto selecionado no SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("selectedSet", selectedSet);
+            editor.apply();
+
+            // Retorna para a MainActivity
+            Intent resultIntent = new Intent();
+            setResult(RESULT_OK, resultIntent);
+            finish();
+        });
+
         setsRecyclerView.setAdapter(adapter);
 
         // Configurar Swipe para remover ou editar

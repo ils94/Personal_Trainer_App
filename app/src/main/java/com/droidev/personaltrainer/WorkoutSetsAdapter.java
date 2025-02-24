@@ -15,10 +15,17 @@ public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.
 
     private Context context;
     private ArrayList<String> workoutSets;
+    private OnItemClickListener listener; // Interface para o listener de clique
 
-    public WorkoutSetsAdapter(Context context, ArrayList<String> workoutSets) {
+    // Interface para o listener de clique
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public WorkoutSetsAdapter(Context context, ArrayList<String> workoutSets, OnItemClickListener listener) {
         this.context = context;
         this.workoutSets = workoutSets;
+        this.listener = listener; // Inicializa o listener
     }
 
     @NonNull
@@ -32,6 +39,13 @@ public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String workoutSet = workoutSets.get(position);
         holder.setNameTextView.setText(workoutSet);
+
+        // Configura o listener de clique no item
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(position);
+            }
+        });
     }
 
     @Override

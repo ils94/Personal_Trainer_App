@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class WorkoutSetsActivity extends AppCompatActivity {
 
@@ -28,6 +30,7 @@ public class WorkoutSetsActivity extends AppCompatActivity {
     private WorkoutSetsAdapter adapter;
     private ArrayList<String> workoutSets;
     private SharedPreferences sharedPreferences;
+    private Gson gson = new Gson(); // Instância do Gson para salvar/carregar JSON
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +41,17 @@ public class WorkoutSetsActivity extends AppCompatActivity {
         addSetButton = findViewById(R.id.addSetButton);
 
         sharedPreferences = getSharedPreferences("WorkoutPrefs", Context.MODE_PRIVATE);
+        loadWorkoutSets(); // Carregar os exercícios salvos
 
-        // Carregar conjuntos de exercícios salvos
-        loadWorkoutSets();
-
-        // Configurar o RecyclerView
         setsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new WorkoutSetsAdapter(this, workoutSets, sharedPreferences);
+        adapter = new WorkoutSetsAdapter(this, workoutSets);
         setsRecyclerView.setAdapter(adapter);
 
-        // Configurar o ItemTouchHelper para swipe left/right
+        // Configurar Swipe para remover ou editar
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false; // Não é necessário implementar o drag
+                return false;
             }
 
             @Override
@@ -60,37 +60,29 @@ public class WorkoutSetsActivity extends AppCompatActivity {
                 String workoutSet = workoutSets.get(position);
 
                 if (direction == ItemTouchHelper.LEFT) {
-                    // Swipe para a esquerda: Remover
-                    adapter.removeItem(position); // Remove o item da lista e notifica o Adapter
-
-                    // Atualizar o SharedPreferences
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    Set<String> sets = new HashSet<>(workoutSets); // Cria um novo Set com a lista atualizada
-                    editor.putStringSet("workoutSets", sets); // Salva o Set no SharedPreferences
-                    editor.apply(); // Aplica as mudanças
-
+                    // Remover item
+                    workoutSets.remove(position);
+                    adapter.removeItem(position);
+                    saveWorkoutSets(); // Salvar alterações
                     Toast.makeText(WorkoutSetsActivity.this, "Conjunto removido: " + workoutSet, Toast.LENGTH_SHORT).show();
                 } else if (direction == ItemTouchHelper.RIGHT) {
-                    // Swipe para a direita: Editar
+                    // Editar item
                     Intent intent = new Intent(WorkoutSetsActivity.this, ConfigActivity.class);
                     intent.putExtra("workoutSet", workoutSet);
-                    startActivityForResult(intent, 2); // Usar requestCode 2 para edição
+                    startActivityForResult(intent, 2);
                 }
             }
 
             @Override
             public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                // Personalizar a aparência do swipe (opcional)
                 View itemView = viewHolder.itemView;
                 Paint paint = new Paint();
 
                 if (dX > 0) {
-                    // Swipe para a direita (Editar)
-                    paint.setColor(Color.parseColor("#388E3C")); // Verde
+                    paint.setColor(Color.parseColor("#388E3C"));
                     c.drawRect((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom(), paint);
                 } else {
-                    // Swipe para a esquerda (Remover)
-                    paint.setColor(Color.parseColor("#D32F2F")); // Vermelho
+                    paint.setColor(Color.parseColor("#D32F2F"));
                     c.drawRect((float) itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom(), paint);
                 }
 
@@ -98,10 +90,8 @@ public class WorkoutSetsActivity extends AppCompatActivity {
             }
         };
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchHelperCallback);
-        itemTouchHelper.attachToRecyclerView(setsRecyclerView);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(setsRecyclerView);
 
-        // Listener para adicionar novo conjunto
         addSetButton.setOnClickListener(v -> {
             Intent intent = new Intent(WorkoutSetsActivity.this, ConfigActivity.class);
             startActivityForResult(intent, 1);
@@ -109,17 +99,35 @@ public class WorkoutSetsActivity extends AppCompatActivity {
     }
 
     private void loadWorkoutSets() {
-        Set<String> sets = sharedPreferences.getStringSet("workoutSets", new HashSet<>());
-        workoutSets = new ArrayList<>(sets);
+        String json = sharedPreferences.getString("workoutSets", "[]");
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        workoutSets = gson.fromJson(json, type);
+
+        if (workoutSets == null) {
+            workoutSets = new ArrayList<>();
+        }
+    }
+
+    private void saveWorkoutSets() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("workoutSets", gson.toJson(workoutSets));
+        editor.apply();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            // Recarregar os conjuntos após adicionar ou editar
             loadWorkoutSets();
-            adapter.updateWorkoutSets(workoutSets); // Atualiza o Adapter com a nova lista
+            adapter.updateWorkoutSets(workoutSets);
+            saveWorkoutSets();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadWorkoutSets();
+        adapter.updateWorkoutSets(workoutSets);
     }
 }

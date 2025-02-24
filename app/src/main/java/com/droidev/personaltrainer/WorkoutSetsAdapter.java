@@ -1,12 +1,10 @@
 package com.droidev.personaltrainer;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,12 +15,10 @@ public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.
 
     private Context context;
     private ArrayList<String> workoutSets;
-    private SharedPreferences sharedPreferences;
 
-    public WorkoutSetsAdapter(Context context, ArrayList<String> workoutSets, SharedPreferences sharedPreferences) {
+    public WorkoutSetsAdapter(Context context, ArrayList<String> workoutSets) {
         this.context = context;
         this.workoutSets = workoutSets;
-        this.sharedPreferences = sharedPreferences;
     }
 
     @NonNull
@@ -35,7 +31,7 @@ public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String workoutSet = workoutSets.get(position);
-        holder.setNameTextView.setText(workoutSet); // Exibe o nome do conjunto
+        holder.setNameTextView.setText(workoutSet);
     }
 
     @Override
@@ -43,26 +39,23 @@ public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.
         return workoutSets.size();
     }
 
-    // Método para atualizar a lista de conjuntos no Adapter
     public void updateWorkoutSets(ArrayList<String> newWorkoutSets) {
-        this.workoutSets.clear(); // Limpa a lista atual
-        this.workoutSets.addAll(newWorkoutSets); // Adiciona os novos dados
-        notifyDataSetChanged(); // Notifica o RecyclerView sobre as mudanças
+        this.workoutSets.clear();
+        this.workoutSets.addAll(newWorkoutSets);
+        notifyDataSetChanged();
     }
 
-    // Método para remover um item da lista
     public void removeItem(int position) {
-        workoutSets.remove(position); // Remove o item da lista
-        notifyItemRemoved(position); // Notifica o Adapter sobre a remoção
+        workoutSets.remove(position);
+        notifyItemRemoved(position);
     }
 
-    // ViewHolder para o RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView setNameTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            setNameTextView = itemView.findViewById(R.id.setNameTextView); // Referência ao TextView no layout do item
+            setNameTextView = itemView.findViewById(R.id.setNameTextView);
         }
     }
 }

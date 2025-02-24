@@ -2,19 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"> <!-- Fundo branco -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/setsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:background="@drawable/rounded_background"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
+        android:scrollbars="vertical" />
 
     <Button
         android:id="@+id/addSetButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Adicionar Novo Conjunto" />
-
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/blue_500"
+        android:elevation="4dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Adicionar Novo Conjunto"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 </LinearLayout>

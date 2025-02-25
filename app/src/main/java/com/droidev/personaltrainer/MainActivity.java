@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
@@ -28,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView timerTextView;
     private Button startButton, pauseButton, stopButton;
     private CountDownTimer countDownTimer, initialCountDownTimer;
-    private TextToSpeech textToSpeech;
+    private TextToSpeech textToSpeech = null;
     private ArrayList<String> exercises;
     private int exerciseTime, restTime, roundInterval, rounds;
     private boolean randomOrder;
@@ -55,15 +52,6 @@ public class MainActivity extends AppCompatActivity {
         // Carregar configurações
         sharedPreferences = getSharedPreferences("WorkoutPrefs", Context.MODE_PRIVATE);
         loadSettings();
-
-        // Configurar TextToSpeech
-        textToSpeech = new TextToSpeech(this, status -> {
-            if (status != TextToSpeech.ERROR) {
-                textToSpeech.setLanguage(Locale.getDefault());
-            } else {
-                Log.e("TextToSpeech", "Erro ao inicializar o TextToSpeech.");
-            }
-        });
 
         // Configurar listeners
         setupListeners();
@@ -101,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         currentExerciseIndex = 0;
         isPaused = false;
         timeRemaining = 0;
-        speak("Iniciando em 10 segundos!");
 
         initialCountDownTimer = new CountDownTimer(10000, 1000) {
             @Override
@@ -122,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
                 startExercise();
             }
         }.start();
+
+        speak("Iniciando em 10 segundos!");
     }
 
     private void startExercise() {
@@ -134,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         String currentExercise = exercises.get(currentExerciseIndex).trim();
-        speak(currentExercise);
+
         currentDisplayText = currentExercise;
         // Ao finalizar o exercício, inicia o descanso
         onFinishAction = this::startRest;
@@ -158,10 +147,11 @@ public class MainActivity extends AppCompatActivity {
                 startRest();
             }
         }.start();
+
+        speak(currentExercise);
     }
 
     private void startRest() {
-        speak("Descanso");
         currentDisplayText = "Descanso";
         // Ao finalizar o descanso, passa para o próximo exercício
         onFinishAction = this::nextExercise;
@@ -185,6 +175,8 @@ public class MainActivity extends AppCompatActivity {
                 nextExercise();
             }
         }.start();
+
+        speak("Descanso");
     }
 
     // Helper method to play a beep sound
@@ -272,7 +264,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeRemaining = millisUntilFinished;
-                timerTextView.setText(currentDisplayText + "\n" + (millisUntilFinished / 1000));
+
+                long secondsLeft = millisUntilFinished / 1000;
+
+                // Update the timer text
+                timerTextView.setText(currentDisplayText + "\n" + secondsLeft);
+
+                // Beep during the last 5 seconds
+                if (secondsLeft <= 5) {
+                    playBeep();
+                }
             }
 
             @Override
@@ -291,17 +292,11 @@ public class MainActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Parar Treino")
                 .setMessage("Tem certeza de que deseja parar o treino?")
+                .setCancelable(false)
                 .setPositiveButton("Sim", (dialog, which) -> {
                     // Se o usuário confirmar, executa o código para parar o treino
-                    if (countDownTimer != null) {
-                        countDownTimer.cancel();
-                        countDownTimer = null;
-                    }
 
-                    if (initialCountDownTimer != null) {
-                        initialCountDownTimer.cancel();
-                        initialCountDownTimer = null;
-                    }
+                    cleanResources();
 
                     currentRound = 0;
                     currentExerciseIndex = 0;
@@ -320,38 +315,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void speak(String text) {
-        if (textToSpeech != null && !textToSpeech.getEngines().isEmpty()) {
-            // Run the speech in a separate thread
-            new Thread(() -> {
+
+        if (textToSpeech == null) {
+            textToSpeech = new TextToSpeech(this, status -> {
+                if (status == TextToSpeech.SUCCESS) {
+                    textToSpeech.setLanguage(Locale.getDefault());
+                    // Speak the text once initialization is complete
+                    textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+                } else {
+                    Log.e("TextToSpeech", "Erro ao inicializar o TextToSpeech.");
+                }
+            });
+        } else {
+            // Check if TTS is ready and engines are available
+            if (!textToSpeech.getEngines().isEmpty()) {
                 textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
-            }).start();
+            } else {
+                Log.e("TextToSpeech", "Nenhum motor TTS disponível.");
+            }
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (textToSpeech != null) {
-            textToSpeech.stop();
-            textToSpeech.shutdown();
-            countDownTimer.cancel();
-            countDownTimer = null;
-        }
 
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-            countDownTimer = null;
-        }
-
-        if (initialCountDownTimer != null) {
-            initialCountDownTimer.cancel();
-            initialCountDownTimer = null;
-        }
-
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
+        cleanResources();
     }
 
     @Override
@@ -381,6 +370,30 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             loadSettings(); // Recarrega as configurações ao retornar
+        }
+    }
+
+    private void cleanResources() {
+
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+            textToSpeech = null;
+        }
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+
+        if (initialCountDownTimer != null) {
+            initialCountDownTimer.cancel();
+            initialCountDownTimer = null;
+        }
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 }

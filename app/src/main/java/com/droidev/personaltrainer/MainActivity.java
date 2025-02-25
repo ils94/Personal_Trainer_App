@@ -95,20 +95,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void startWorkout() {
         if (countDownTimer != null) return;
-
         startButton.setEnabled(false);
         pauseButton.setEnabled(true);
         currentRound = 0;
         currentExerciseIndex = 0;
         isPaused = false;
         timeRemaining = 0;
-
         speak("Iniciando em 10 segundos!");
 
         initialCountDownTimer = new CountDownTimer(10000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                timerTextView.setText(String.valueOf(millisUntilFinished / 1000));
+                long secondsLeft = millisUntilFinished / 1000;
+
+                // Update the timer text
+                timerTextView.setText(String.valueOf(secondsLeft));
+
+                // Beep during the last 5 seconds
+                if (secondsLeft <= 5) {
+                    playBeep();
+                }
             }
 
             @Override
@@ -315,7 +321,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void speak(String text) {
         if (textToSpeech != null && !textToSpeech.getEngines().isEmpty()) {
-            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+            // Run the speech in a separate thread
+            new Thread(() -> {
+                textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+            }).start();
         }
     }
 

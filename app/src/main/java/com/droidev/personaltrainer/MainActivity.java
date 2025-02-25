@@ -3,6 +3,10 @@ package com.droidev.personaltrainer;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private Runnable onFinishAction;
     private String currentDisplayText = "";
     private SharedPreferences sharedPreferences;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,28 +121,30 @@ public class MainActivity extends AppCompatActivity {
     private void startExercise() {
         if (currentRound >= rounds) {
             speak("Treino Finalizado!");
-
             timerTextView.setText("Treino Finalizado!");
             startButton.setEnabled(true);
             countDownTimer = null;
             initialCountDownTimer = null;
             return;
         }
-
         String currentExercise = exercises.get(currentExerciseIndex).trim();
-
         speak(currentExercise);
-
         currentDisplayText = currentExercise;
-
         // Ao finalizar o exercício, inicia o descanso
         onFinishAction = this::startRest;
-
         countDownTimer = new CountDownTimer(exerciseTime * 1000L, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeRemaining = millisUntilFinished;
-                timerTextView.setText(currentDisplayText + "\n" + (millisUntilFinished / 1000));
+                long secondsLeft = millisUntilFinished / 1000;
+
+                // Update the timer text
+                timerTextView.setText(currentDisplayText + "\n" + secondsLeft);
+
+                // Beep during the last 5 seconds
+                if (secondsLeft <= 5) {
+                    playBeep();
+                }
             }
 
             @Override
@@ -149,17 +156,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void startRest() {
         speak("Descanso");
-
         currentDisplayText = "Descanso";
-
         // Ao finalizar o descanso, passa para o próximo exercício
         onFinishAction = this::nextExercise;
-
         countDownTimer = new CountDownTimer(restTime * 1000L, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeRemaining = millisUntilFinished;
-                timerTextView.setText(currentDisplayText + "\n" + (millisUntilFinished / 1000));
+                long secondsLeft = millisUntilFinished / 1000;
+
+                // Update the timer text
+                timerTextView.setText(currentDisplayText + "\n" + secondsLeft);
+
+                // Beep during the last 5 seconds
+                if (secondsLeft <= 5) {
+                    playBeep();
+                }
             }
 
             @Override
@@ -167,6 +179,21 @@ public class MainActivity extends AppCompatActivity {
                 nextExercise();
             }
         }.start();
+    }
+
+    // Helper method to play a beep sound
+    private void playBeep() {
+        try {
+            if (mediaPlayer == null) {
+                // Initialize MediaPlayer with the custom beep sound
+                mediaPlayer = MediaPlayer.create(this, R.raw.beep); // Ensure 'beep.mp3' is in the 'res/raw' folder
+            }
+            if (!mediaPlayer.isPlaying()) {
+                mediaPlayer.start(); // Play the beep sound
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void nextExercise() {
@@ -310,6 +337,11 @@ public class MainActivity extends AppCompatActivity {
         if (initialCountDownTimer != null) {
             initialCountDownTimer.cancel();
             initialCountDownTimer = null;
+        }
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 

@@ -56,7 +56,12 @@ public class ConfigActivity extends AppCompatActivity {
             workoutSetToEdit = gson.fromJson(workoutSetJson, WorkoutSet.class);
 
             // Encontra a posição do conjunto na lista
-            editPosition = workoutSets.indexOf(workoutSetToEdit);
+            for (int i = 0; i < workoutSets.size(); i++) {
+                if (workoutSets.get(i).equals(workoutSetToEdit)) {
+                    editPosition = i;
+                    break;
+                }
+            }
 
             // Preenche os campos com os valores
             exercisesInput.setText(workoutSetToEdit.getExercises());
@@ -85,8 +90,7 @@ public class ConfigActivity extends AppCompatActivity {
         }
 
         // Parse o JSON para ArrayList<WorkoutSet>
-        Type type = new TypeToken<ArrayList<WorkoutSet>>() {
-        }.getType();
+        Type type = new TypeToken<ArrayList<WorkoutSet>>() {}.getType();
         workoutSets = gson.fromJson(json, type);
 
         if (workoutSets == null) {

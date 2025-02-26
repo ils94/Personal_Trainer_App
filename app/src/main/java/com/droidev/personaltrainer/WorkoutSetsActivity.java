@@ -27,12 +27,10 @@ import java.util.ArrayList;
 
 public class WorkoutSetsActivity extends AppCompatActivity {
 
-    private RecyclerView setsRecyclerView;
-    private Button addSetButton;
     private WorkoutSetsAdapter adapter;
     private ArrayList<WorkoutSet> workoutSets;
     private SharedPreferences sharedPreferences;
-    private Gson gson = new Gson(); // Instância do Gson para salvar/carregar JSON
+    private final Gson gson = new Gson(); // Instância do Gson para salvar/carregar JSON
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +39,8 @@ public class WorkoutSetsActivity extends AppCompatActivity {
 
         setTitle("Conjunto de Exercícios");
 
-        setsRecyclerView = findViewById(R.id.setsRecyclerView);
-        addSetButton = findViewById(R.id.addSetButton);
+        RecyclerView setsRecyclerView = findViewById(R.id.setsRecyclerView);
+        Button addSetButton = findViewById(R.id.addSetButton);
 
         sharedPreferences = getSharedPreferences("WorkoutPrefs", Context.MODE_PRIVATE);
         loadWorkoutSets(); // Carregar os exercícios salvos
@@ -129,7 +127,7 @@ public class WorkoutSetsActivity extends AppCompatActivity {
 
                     // Desenha o texto "Editar"
                     float textX = itemView.getLeft() + (dX / 2);
-                    float textY = itemView.getTop() + ((itemView.getBottom() - itemView.getTop()) / 2) + 15; // Centraliza verticalmente
+                    float textY = itemView.getTop() + ((float) (itemView.getBottom() - itemView.getTop()) / 2) + 15; // Centraliza verticalmente
                     c.drawText("Editar", textX, textY, textPaint);
                 } else if (dX < 0) {
                     // Swipe para a esquerda (Apagar)
@@ -138,7 +136,7 @@ public class WorkoutSetsActivity extends AppCompatActivity {
 
                     // Desenha o texto "Apagar"
                     float textX = itemView.getRight() + (dX / 2);
-                    float textY = itemView.getTop() + ((itemView.getBottom() - itemView.getTop()) / 2) + 15; // Centraliza verticalmente
+                    float textY = itemView.getTop() + ((float) (itemView.getBottom() - itemView.getTop()) / 2) + 15; // Centraliza verticalmente
                     c.drawText("Apagar", textX, textY, textPaint);
                 }
 

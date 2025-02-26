@@ -1,5 +1,7 @@
 package com.droidev.personaltrainer;
 
+import java.util.Objects;
+
 public class WorkoutSet {
     private String type; // Novo campo: tipo de treino
     private String exercises;
@@ -79,8 +81,8 @@ public class WorkoutSet {
         if (roundInterval != that.roundInterval) return false;
         if (rounds != that.rounds) return false;
         if (randomOrder != that.randomOrder) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false; // Incluído o campo "type"
-        return exercises != null ? exercises.equals(that.exercises) : that.exercises == null;
+        if (!Objects.equals(type, that.type)) return false; // Incluído o campo "type"
+        return Objects.equals(exercises, that.exercises);
     }
 
     @Override

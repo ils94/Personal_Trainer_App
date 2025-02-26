@@ -1,4 +1,5 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -20,7 +21,8 @@
             android:gravity="center"
             android:text="0"
             android:textColor="@color/black"
-            android:textSize="50sp" />
+            android:textSize="50sp"
+            tools:ignore="HardcodedText" />
 
         <!-- Start Button -->
         <Button
@@ -35,7 +37,8 @@
             android:text="Iniciar"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:ignore="HardcodedText,TextContrastCheck,VisualLintButtonSize" />
 
         <!-- Pause Button -->
         <Button
@@ -50,7 +53,8 @@
             android:text="Pausar"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:ignore="HardcodedText,TextContrastCheck,VisualLintButtonSize" />
 
         <!-- Stop Button -->
         <Button
@@ -64,7 +68,8 @@
             android:text="Parar"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:ignore="HardcodedText,TextContrastCheck,VisualLintButtonSize" />
 
     </LinearLayout>
 </ScrollView>

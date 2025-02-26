@@ -1,5 +1,6 @@
 package com.droidev.personaltrainer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentDisplayText = "";
     private SharedPreferences sharedPreferences;
     private MediaPlayer mediaPlayer;
-    private Gson gson = new Gson(); // Instância do Gson para trabalhar com JSON
+    private final Gson gson = new Gson(); // Instância do Gson para trabalhar com JSON
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +84,6 @@ public class MainActivity extends AppCompatActivity {
             randomOrder = selectedSet.isRandomOrder();
 
             // Se a ordem for aleatória, embaralha os exercícios
-            if (randomOrder) {
-                Collections.shuffle(exercises);
-            }
         } else {
             // Se não encontrar o conjunto, usar os valores padrão
             String exercisesText = sharedPreferences.getString("exercises", "Exercício 1, Exercício 2");
@@ -96,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
             rounds = sharedPreferences.getInt("rounds", 3);
             randomOrder = sharedPreferences.getBoolean("randomOrder", false);
 
-            if (randomOrder) {
-                Collections.shuffle(exercises);
-            }
+        }
+        if (randomOrder) {
+            Collections.shuffle(exercises);
         }
     }
 
@@ -135,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
         speak("Iniciando em 10 segundos!");
     }
 
+    @SuppressLint("SetTextI18n")
     private void startExercise() {
         if (currentRound >= rounds) {
             speak("Treino Finalizado!");
@@ -173,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
         speak(currentExercise);
     }
 
+    @SuppressLint("SetTextI18n")
     private void nextExercise() {
         currentExerciseIndex++;
 
@@ -204,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
         onFinishAction = this::nextExercise;
 
         countDownTimer = new CountDownTimer(restTime * 1000L, 1000) {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onTick(long millisUntilFinished) {
                 timeRemaining = millisUntilFinished;
@@ -232,6 +233,7 @@ public class MainActivity extends AppCompatActivity {
         onFinishAction = this::startExercise;
 
         countDownTimer = new CountDownTimer(roundInterval * 1000L, 1000) {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onTick(long millisUntilFinished) {
                 timeRemaining = millisUntilFinished;
@@ -260,6 +262,7 @@ public class MainActivity extends AppCompatActivity {
         speak("Próxima rodada em breve");
     }
 
+    @SuppressLint("SetTextI18n")
     private void togglePause() {
 
         if (isPaused) {
@@ -286,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         countDownTimer = new CountDownTimer(timeRemaining, 1000) {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onTick(long millisUntilFinished) {
                 timeRemaining = millisUntilFinished;
@@ -312,6 +316,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("ResumeTimer", "Timer retomado com " + timeRemaining + "ms restantes.");
     }
 
+    @SuppressLint("SetTextI18n")
     private void stopWorkout() {
         // Cria um AlertDialog para confirmar se o usuário realmente deseja parar o treino
         new AlertDialog.Builder(this)

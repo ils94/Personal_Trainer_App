@@ -20,9 +20,9 @@ import java.util.ArrayList;
 
 public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.ViewHolder> {
 
-    private Context context;
-    private ArrayList<WorkoutSet> workoutSets;
-    private OnItemClickListener listener;
+    private final Context context;
+    private final ArrayList<WorkoutSet> workoutSets;
+    private final OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -102,6 +102,7 @@ public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.
         return workoutSets.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void updateWorkoutSets(ArrayList<WorkoutSet> newWorkoutSets) {
         this.workoutSets.clear();
         this.workoutSets.addAll(newWorkoutSets);

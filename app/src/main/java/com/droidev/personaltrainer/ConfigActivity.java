@@ -22,12 +22,10 @@ public class ConfigActivity extends AppCompatActivity {
 
     private EditText exerciseType, exercisesInput, exerciseTimeInput, restTimeInput, roundIntervalInput, roundsInput;
     private CheckBox randomOrderCheckbox;
-    private Button saveButton;
 
     private SharedPreferences sharedPreferences;
-    private Gson gson = new Gson(); // Instância do Gson para trabalhar com JSON
+    private final Gson gson = new Gson(); // Instância do Gson para trabalhar com JSON
     private ArrayList<WorkoutSet> workoutSets; // Lista de WorkoutSet
-    private WorkoutSet workoutSetToEdit; // Conjunto que está sendo editado
     private int editPosition = -1; // Posição do conjunto sendo editado
 
     @Override
@@ -45,7 +43,7 @@ public class ConfigActivity extends AppCompatActivity {
         roundIntervalInput = findViewById(R.id.roundIntervalInput);
         roundsInput = findViewById(R.id.roundsInput);
         randomOrderCheckbox = findViewById(R.id.randomOrderCheckbox);
-        saveButton = findViewById(R.id.saveButton);
+        Button saveButton = findViewById(R.id.saveButton);
 
         sharedPreferences = getSharedPreferences("WorkoutPrefs", Context.MODE_PRIVATE);
         loadWorkoutSets(); // Carrega a lista de treinos salva
@@ -54,7 +52,8 @@ public class ConfigActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.hasExtra("workoutSet")) {
             String workoutSetJson = intent.getStringExtra("workoutSet");
-            workoutSetToEdit = gson.fromJson(workoutSetJson, WorkoutSet.class);
+            // Conjunto que está sendo editado
+            WorkoutSet workoutSetToEdit = gson.fromJson(workoutSetJson, WorkoutSet.class);
 
             // Encontra a posição do conjunto na lista
             for (int i = 0; i < workoutSets.size(); i++) {

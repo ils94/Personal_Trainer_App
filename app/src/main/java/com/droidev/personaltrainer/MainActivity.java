@@ -151,20 +151,43 @@ public class MainActivity extends AppCompatActivity {
         speak(currentExercise);
     }
 
+    private void nextExercise() {
+        currentExerciseIndex++;
+
+        if (currentExerciseIndex >= exercises.size()) { // Se terminou os exercícios do round
+            currentExerciseIndex = 0;
+            currentRound++;
+
+            if (currentRound < rounds) {
+                startRoundInterval(); // Faz o intervalo entre rounds
+            } else {
+                speak("Treino Finalizado!");
+                timerTextView.setText("Treino Finalizado!");
+                startButton.setEnabled(true);
+                countDownTimer = null;
+            }
+        } else {
+            startExercise(); // Próximo exercício normalmente
+        }
+    }
+
     private void startRest() {
+        // Se este for o último exercício do round e ainda houver rounds, NÃO faz o descanso, vai direto para o intervalo
+        if (currentExerciseIndex == exercises.size() - 1 && currentRound < rounds) {
+            nextExercise(); // Vai direto para o intervalo do round
+            return;
+        }
+
         currentDisplayText = "Descanso";
-        // Ao finalizar o descanso, passa para o próximo exercício
         onFinishAction = this::nextExercise;
+
         countDownTimer = new CountDownTimer(restTime * 1000L, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeRemaining = millisUntilFinished;
                 long secondsLeft = millisUntilFinished / 1000;
-
-                // Update the timer text
                 timerTextView.setText(currentDisplayText + "\n" + secondsLeft);
 
-                // Beep during the last 5 seconds
                 if (secondsLeft <= 5) {
                     playBeep();
                 }
@@ -177,25 +200,6 @@ public class MainActivity extends AppCompatActivity {
         }.start();
 
         speak("Descanso");
-    }
-
-    private void nextExercise() {
-        currentExerciseIndex++;
-        if (currentExerciseIndex >= exercises.size()) {
-            currentExerciseIndex = 0;
-            currentRound++;
-            if (currentRound < rounds) {
-                startRoundInterval();
-            } else {
-                speak("Treino Finalizado!");
-
-                timerTextView.setText("Treino Finalizado!");
-                startButton.setEnabled(true);
-                countDownTimer = null;
-            }
-        } else {
-            startExercise();
-        }
     }
 
     private void startRoundInterval() {

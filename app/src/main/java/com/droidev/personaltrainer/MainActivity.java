@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         roundInterval = sharedPreferences.getInt("roundInterval", 20);
         rounds = sharedPreferences.getInt("rounds", 3);
         randomOrder = sharedPreferences.getBoolean("randomOrder", false);
+
         if (randomOrder) {
             Collections.shuffle(exercises);
         }
@@ -230,6 +231,10 @@ public class MainActivity extends AppCompatActivity {
                 startExercise();
             }
         }.start();
+
+        if (randomOrder) {
+            Collections.shuffle(exercises);
+        }
 
         speak("Próxima rodada em breve");
     }

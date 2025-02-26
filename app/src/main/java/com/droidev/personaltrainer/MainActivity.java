@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             // Se a ordem for aleatória, embaralha os exercícios
         } else {
             // Se não encontrar o conjunto, usar os valores padrão
-            String exercisesText = sharedPreferences.getString("exercises", "Exercício 1, Exercício 2");
+            String exercisesText = sharedPreferences.getString("exercises", "Exercise 1, Exercise 2");
             exercises = new ArrayList<>(Arrays.asList(exercisesText.split(",")));
             exerciseTime = sharedPreferences.getInt("exerciseTime", 30);
             restTime = sharedPreferences.getInt("restTime", 10);
@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 timerTextView.setText(getString(R.string.workout_finished));
                 startButton.setEnabled(true);
                 countDownTimer = null;
+                workoutSetsItem.setEnabled(true);
 
                 speak(getString(R.string.workout_finished));
             }

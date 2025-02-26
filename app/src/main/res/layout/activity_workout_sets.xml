@@ -25,7 +25,7 @@
         android:backgroundTint="@color/blue_500"
         android:elevation="4dp"
         android:fontFamily="sans-serif-medium"
-        android:text="Adicionar Novo Conjunto"
+        android:text="@string/add_new_set_button_text"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="16sp"

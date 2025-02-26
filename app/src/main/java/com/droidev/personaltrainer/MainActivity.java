@@ -130,17 +130,20 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
 
-        speak("Iniciando em 10 segundos!");
+        speak(getString(R.string.starting_in_10_seconds));
     }
 
     @SuppressLint("SetTextI18n")
     private void startExercise() {
         if (currentRound >= rounds) {
-            speak("Treino Finalizado!");
-            timerTextView.setText("Treino Finalizado!");
+
+            timerTextView.setText(getString(R.string.workout_finished));
             startButton.setEnabled(true);
             countDownTimer = null;
             initialCountDownTimer = null;
+
+            speak(getString(R.string.workout_finished));
+
             return;
         }
         String currentExercise = exercises.get(currentExerciseIndex).trim();
@@ -183,10 +186,12 @@ public class MainActivity extends AppCompatActivity {
             if (currentRound < rounds) {
                 startRoundInterval(); // Faz o intervalo entre rounds
             } else {
-                speak("Treino Finalizado!");
-                timerTextView.setText("Treino Finalizado!");
+
+                timerTextView.setText(getString(R.string.workout_finished));
                 startButton.setEnabled(true);
                 countDownTimer = null;
+
+                speak(getString(R.string.workout_finished));
             }
         } else {
             startExercise(); // Próximo exercício normalmente
@@ -200,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        currentDisplayText = "Descanso";
+        currentDisplayText = getString(R.string.rest);
         onFinishAction = this::nextExercise;
 
         countDownTimer = new CountDownTimer(restTime * 1000L, 1000) {
@@ -222,12 +227,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
 
-        speak("Descanso");
+        speak(getString(R.string.rest));
     }
 
     private void startRoundInterval() {
 
-        currentDisplayText = "Intervalo";
+        currentDisplayText = getString(R.string.interval);
 
         // Ao finalizar o intervalo, inicia um novo exercício
         onFinishAction = this::startExercise;
@@ -259,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
             Collections.shuffle(exercises);
         }
 
-        speak("Próxima rodada em breve");
+        speak(getString(R.string.next_round_soon));
     }
 
     @SuppressLint("SetTextI18n")
@@ -268,13 +273,13 @@ public class MainActivity extends AppCompatActivity {
         if (isPaused) {
             // Retomar o timer
             isPaused = false;
-            pauseButton.setText("Pausar");
+            pauseButton.setText(getString(R.string.pause_button));
             resumeTimer();
         } else {
             if (countDownTimer != null) {
                 // Pausar o timer
                 isPaused = true;
-                pauseButton.setText("Continuar");
+                pauseButton.setText(getString(R.string.continue_button));
 
                 countDownTimer.cancel();
                 countDownTimer = null;
@@ -320,10 +325,10 @@ public class MainActivity extends AppCompatActivity {
     private void stopWorkout() {
         // Cria um AlertDialog para confirmar se o usuário realmente deseja parar o treino
         new AlertDialog.Builder(this)
-                .setTitle("Parar Treino")
-                .setMessage("Tem certeza de que deseja parar o treino?")
+                .setTitle(getString(R.string.stop_workout))
+                .setMessage(getString(R.string.stop_workout_message))
                 .setCancelable(false)
-                .setPositiveButton("Sim", (dialog, which) -> {
+                .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
                     // Se o usuário confirmar, executa o código para parar o treino
 
                     cleanResources();
@@ -336,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
                     pauseButton.setText("Pausar");
                     isPaused = false;
                 })
-                .setNegativeButton("Não", (dialog, which) -> {
+                .setNegativeButton(getString(R.string.no), (dialog, which) -> {
                     // Se o usuário cancelar, não faz nada e fecha o diálogo
                     dialog.dismiss();
                 })

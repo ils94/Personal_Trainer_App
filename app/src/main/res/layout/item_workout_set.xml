@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="Nome do Conjunto"
+            android:text="@string/set_name"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="Exercícios"
+            android:text="@string/exercises"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             tools:ignore="HardcodedText" />
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="Tempo por exercício"
+            android:text="@string/exercise_time"
             android:textColor="@android:color/black"
             tools:ignore="HardcodedText" />
 
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="Descanso"
+            android:text="@string/rest_time"
             android:textColor="@android:color/black"
             tools:ignore="HardcodedText" />
 
@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="Rodadas"
+            android:text="@string/rounds"
             android:textColor="@android:color/black"
             tools:ignore="HardcodedText" />
 
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="Intervalo entre rodadas"
+            android:text="@string/round_interval"
             android:textColor="@android:color/black"
             tools:ignore="HardcodedText" />
 
@@ -77,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="4dp"
-            android:text="Ordem aleatória"
+            android:text="@string/random_order"
             android:textColor="@android:color/black"
             tools:ignore="HardcodedText" />
 

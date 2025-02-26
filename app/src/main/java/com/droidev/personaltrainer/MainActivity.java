@@ -213,7 +213,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeRemaining = millisUntilFinished;
-                timerTextView.setText(currentDisplayText + "\n" + (millisUntilFinished / 1000));
+
+                long secondsLeft = millisUntilFinished / 1000;
+
+                // Update the timer text
+                timerTextView.setText(currentDisplayText + "\n" + secondsLeft);
+
+                // Beep during the last 5 seconds
+                if (secondsLeft <= 5) {
+                    playBeep();
+                }
             }
 
             @Override

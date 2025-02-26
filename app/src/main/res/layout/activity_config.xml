@@ -9,6 +9,19 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <EditText
+            android:id="@+id/exerciseType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/light_gray"
+            android:hint="Tipo de treino"
+            android:padding="12dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="16sp" />
+
         <!-- Lista de Exercícios -->
         <EditText
             android:id="@+id/exercisesInput"

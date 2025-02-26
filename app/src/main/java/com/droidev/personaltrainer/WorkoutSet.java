@@ -1,6 +1,7 @@
 package com.droidev.personaltrainer;
 
 public class WorkoutSet {
+    private String type; // Novo campo: tipo de treino
     private String exercises;
     private int exerciseTime;
     private int restTime;
@@ -9,6 +10,14 @@ public class WorkoutSet {
     private boolean randomOrder;
 
     // Getters e Setters
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) { // Corrigido o setter para void
+        this.type = type;
+    }
+
     public String getExercises() {
         return exercises;
     }
@@ -57,7 +66,7 @@ public class WorkoutSet {
         this.randomOrder = randomOrder;
     }
 
-    // Implementação do equals e hashCode
+    // Implementação do equals e hashCode atualizados para incluir o campo "type"
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,12 +79,14 @@ public class WorkoutSet {
         if (roundInterval != that.roundInterval) return false;
         if (rounds != that.rounds) return false;
         if (randomOrder != that.randomOrder) return false;
+        if (type != null ? !type.equals(that.type) : that.type != null) return false; // Incluído o campo "type"
         return exercises != null ? exercises.equals(that.exercises) : that.exercises == null;
     }
 
     @Override
     public int hashCode() {
-        int result = exercises != null ? exercises.hashCode() : 0;
+        int result = type != null ? type.hashCode() : 0; // Incluído o campo "type"
+        result = 31 * result + (exercises != null ? exercises.hashCode() : 0);
         result = 31 * result + exerciseTime;
         result = 31 * result + restTime;
         result = 31 * result + roundInterval;

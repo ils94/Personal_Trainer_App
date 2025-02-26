@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class ConfigActivity extends AppCompatActivity {
 
-    private EditText exercisesInput, exerciseTimeInput, restTimeInput, roundIntervalInput, roundsInput;
+    private EditText exerciseType, exercisesInput, exerciseTimeInput, restTimeInput, roundIntervalInput, roundsInput;
     private CheckBox randomOrderCheckbox;
     private Button saveButton;
 
@@ -38,6 +38,7 @@ public class ConfigActivity extends AppCompatActivity {
         setTitle("Adicionar/Editar Conjunto");
 
         // Inicializa os componentes da UI
+        exerciseType = findViewById(R.id.exerciseType);
         exercisesInput = findViewById(R.id.exercisesInput);
         exerciseTimeInput = findViewById(R.id.exerciseTimeInput);
         restTimeInput = findViewById(R.id.restTimeInput);
@@ -64,6 +65,7 @@ public class ConfigActivity extends AppCompatActivity {
             }
 
             // Preenche os campos com os valores
+            exerciseType.setText(workoutSetToEdit.getType()); // Preenche o tipo de treino
             exercisesInput.setText(workoutSetToEdit.getExercises());
             exerciseTimeInput.setText(String.valueOf(workoutSetToEdit.getExerciseTime()));
             restTimeInput.setText(String.valueOf(workoutSetToEdit.getRestTime()));
@@ -99,7 +101,13 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     private void saveWorkoutSet() {
+        String typeText = exerciseType.getText().toString().trim(); // Captura o tipo de treino
         String exercisesText = exercisesInput.getText().toString().trim();
+
+        if (typeText.isEmpty()) {
+            exerciseType.setError("Insira o tipo de treino");
+            return;
+        }
 
         if (exercisesText.isEmpty()) {
             exercisesInput.setError("Insira pelo menos um exercício");
@@ -119,6 +127,7 @@ public class ConfigActivity extends AppCompatActivity {
 
             // Cria um novo objeto WorkoutSet
             WorkoutSet workoutSet = new WorkoutSet();
+            workoutSet.setType(typeText); // Define o tipo de treino
             workoutSet.setExercises(exercisesText);
             workoutSet.setExerciseTime(exerciseTime);
             workoutSet.setRestTime(restTime);

@@ -51,7 +51,7 @@ public class WorkoutSetsActivity extends AppCompatActivity {
         adapter = new WorkoutSetsAdapter(this, workoutSets, position -> {
             WorkoutSet selectedSet = workoutSets.get(position); // Obtém o conjunto selecionado
 
-            Toast.makeText(this, "Selecionado: " + selectedSet.getExercises(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Treino: " + selectedSet.getType(), Toast.LENGTH_SHORT).show();
 
             // Salva o conjunto selecionado no SharedPreferences
             SharedPreferences.Editor editor = sharedPreferences.edit();

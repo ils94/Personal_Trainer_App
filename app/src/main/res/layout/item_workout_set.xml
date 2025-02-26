@@ -1,60 +1,85 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_margin="8dp"
+    android:backgroundTint="@android:color/white"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
-    <TextView
-        android:id="@+id/setNameTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="4dp"
-        android:text="Nome do Conjunto"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/exercisesTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Exercícios"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        <TextView
+            android:id="@+id/setNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="Nome do Conjunto"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/exerciseTimeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tempo por exercício"
-        android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/exercisesTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="Exercícios"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/restTimeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Descanso"
-        android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/exerciseTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="Tempo por exercício"
+            android:textColor="@android:color/black"
+            tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/roundsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rodadas"
-        android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/restTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="Descanso"
+            android:textColor="@android:color/black"
+            tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/roundIntervalTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Intervalo entre rodadas"
-        android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/roundsTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="Rodadas"
+            android:textColor="@android:color/black"
+            tools:ignore="HardcodedText" />
 
-    <TextView
-        android:id="@+id/randomOrderTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ordem aleatória"
-        android:textColor="@android:color/black" />
+        <TextView
+            android:id="@+id/roundIntervalTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="Intervalo entre rodadas"
+            android:textColor="@android:color/black"
+            tools:ignore="HardcodedText" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/randomOrderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:text="Ordem aleatória"
+            android:textColor="@android:color/black"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

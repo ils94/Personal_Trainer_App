@@ -338,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
                     timeRemaining = 0;
                     timerTextView.setText("0");
                     startButton.setEnabled(true);
-                    pauseButton.setText("Pausar");
+                    pauseButton.setText(getString(R.string.pause_button));
                     isPaused = false;
                 })
                 .setNegativeButton(getString(R.string.no), (dialog, which) -> {

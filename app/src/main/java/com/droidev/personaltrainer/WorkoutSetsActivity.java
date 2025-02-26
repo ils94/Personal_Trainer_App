@@ -37,7 +37,7 @@ public class WorkoutSetsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout_sets);
 
-        setTitle("Conjunto de Exercícios");
+        setTitle(getString(R.string.workout_sets_title));
 
         RecyclerView setsRecyclerView = findViewById(R.id.setsRecyclerView);
         Button addSetButton = findViewById(R.id.addSetButton);
@@ -49,7 +49,7 @@ public class WorkoutSetsActivity extends AppCompatActivity {
         adapter = new WorkoutSetsAdapter(this, workoutSets, position -> {
             WorkoutSet selectedSet = workoutSets.get(position); // Obtém o conjunto selecionado
 
-            Toast.makeText(this, "Treino: " + selectedSet.getType(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_selected_set) + selectedSet.getType(), Toast.LENGTH_SHORT).show();
 
             // Salva o conjunto selecionado no SharedPreferences
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -79,17 +79,17 @@ public class WorkoutSetsActivity extends AppCompatActivity {
                 if (direction == ItemTouchHelper.LEFT) {
                     // Mostrar caixa de diálogo de confirmação
                     new AlertDialog.Builder(WorkoutSetsActivity.this)
-                            .setTitle("Remover Conjunto")
-                            .setMessage("Tem certeza que deseja remover o conjunto?")
+                            .setTitle(getString(R.string.dialog_remove_title))
+                            .setMessage(getString(R.string.dialog_remove_message))
                             .setCancelable(false)
-                            .setPositiveButton("Sim", (dialog, which) -> {
+                            .setPositiveButton(getString(R.string.yes), (dialog, which) -> {
                                 // Remover item após confirmação
                                 workoutSets.remove(position);
                                 adapter.removeItem(position);
                                 saveWorkoutSets(); // Salvar alterações
-                                Toast.makeText(WorkoutSetsActivity.this, "Conjunto removido", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(WorkoutSetsActivity.this, getString(R.string.toast_set_removed), Toast.LENGTH_SHORT).show();
                             })
-                            .setNegativeButton("Cancelar", (dialog, which) -> {
+                            .setNegativeButton(getString(R.string.no), (dialog, which) -> {
                                 // Cancelar a ação e reverter o swipe
                                 adapter.notifyItemChanged(position);
                             })
@@ -128,7 +128,7 @@ public class WorkoutSetsActivity extends AppCompatActivity {
                     // Desenha o texto "Editar"
                     float textX = itemView.getLeft() + (dX / 2);
                     float textY = itemView.getTop() + ((float) (itemView.getBottom() - itemView.getTop()) / 2) + 15; // Centraliza verticalmente
-                    c.drawText("Editar", textX, textY, textPaint);
+                    c.drawText(getString(R.string.swipe_edit_text), textX, textY, textPaint);
                 } else if (dX < 0) {
                     // Swipe para a esquerda (Apagar)
                     paint.setColor(Color.parseColor("#D32F2F")); // Vermelho
@@ -137,7 +137,7 @@ public class WorkoutSetsActivity extends AppCompatActivity {
                     // Desenha o texto "Apagar"
                     float textX = itemView.getRight() + (dX / 2);
                     float textY = itemView.getTop() + ((float) (itemView.getBottom() - itemView.getTop()) / 2) + 15; // Centraliza verticalmente
-                    c.drawText("Apagar", textX, textY, textPaint);
+                    c.drawText(getString(R.string.swipe_delete_text), textX, textY, textPaint);
                 }
 
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

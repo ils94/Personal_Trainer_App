@@ -2,6 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_workout_sets"
-        android:title="Conjuntos de Exercícios"
+        android:title="@string/action_workout_sets"
         app:showAsAction="never" />
 </menu>

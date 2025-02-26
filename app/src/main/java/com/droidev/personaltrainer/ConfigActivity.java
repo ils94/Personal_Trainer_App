@@ -33,7 +33,7 @@ public class ConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
 
-        setTitle("Adicionar/Editar Conjunto");
+        setTitle(getString(R.string.config_title));
 
         // Inicializa os componentes da UI
         exerciseType = findViewById(R.id.exerciseType);
@@ -104,12 +104,12 @@ public class ConfigActivity extends AppCompatActivity {
         String exercisesText = exercisesInput.getText().toString().trim();
 
         if (typeText.isEmpty()) {
-            exerciseType.setError("Insira o tipo de treino");
+            exerciseType.setError(getString(R.string.error_exercise_type));
             return;
         }
 
         if (exercisesText.isEmpty()) {
-            exercisesInput.setError("Insira pelo menos um exercício");
+            exercisesInput.setError(getString(R.string.error_exercises_input));
             return;
         }
 
@@ -148,12 +148,12 @@ public class ConfigActivity extends AppCompatActivity {
             editor.putString("workoutSets", gson.toJson(workoutSets));
             editor.apply();
 
-            Toast.makeText(this, "Configurações salvas!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_save_success), Toast.LENGTH_SHORT).show();
             setResult(RESULT_OK);
             finish(); // Fecha a tela de configuração
 
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Insira valores válidos!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.toast_invalid_values), Toast.LENGTH_SHORT).show();
         }
     }
 }

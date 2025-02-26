@@ -35,4 +35,19 @@
     <string name="speak_error">Error initializing TextToSpeech.</string>
     <string name="beep_error">Error playing beep sound.</string>
     <string name="confirm_stop">Confirm Stop</string>
+    <string name="workout_sets_title">Workout Sets</string>
+    <string name="toast_selected_set">Workout: %1$s</string>
+    <string name="dialog_remove_title">Remove Set</string>
+    <string name="dialog_remove_message">Are you sure you want to remove the set?</string>
+    <string name="dialog_remove_positive">Yes</string>
+    <string name="dialog_remove_negative">Cancel</string>
+    <string name="toast_set_removed">Set removed</string>
+    <string name="swipe_edit_text">Edit</string>
+    <string name="swipe_delete_text">Delete</string>
+    <string name="config_title">Add/Edit Set</string>
+    <string name="error_exercise_type">Please enter the workout type</string>
+    <string name="error_exercises_input">Please enter at least one exercise</string>
+    <string name="toast_save_success">Settings saved!</string>
+    <string name="toast_invalid_values">Please enter valid values!</string>
+    <string name="action_workout_sets">Workout Sets</string>
 </resources>

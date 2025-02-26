@@ -179,21 +179,6 @@ public class MainActivity extends AppCompatActivity {
         speak("Descanso");
     }
 
-    // Helper method to play a beep sound
-    private void playBeep() {
-        try {
-            if (mediaPlayer == null) {
-                // Initialize MediaPlayer with the custom beep sound
-                mediaPlayer = MediaPlayer.create(this, R.raw.beep); // Ensure 'beep.mp3' is in the 'res/raw' folder
-            }
-            if (!mediaPlayer.isPlaying()) {
-                mediaPlayer.start(); // Play the beep sound
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     private void nextExercise() {
         currentExerciseIndex++;
         if (currentExerciseIndex >= exercises.size()) {
@@ -395,6 +380,21 @@ public class MainActivity extends AppCompatActivity {
         if (mediaPlayer != null) {
             mediaPlayer.release();
             mediaPlayer = null;
+        }
+    }
+
+    // Helper method to play a beep sound
+    private void playBeep() {
+        try {
+            if (mediaPlayer == null) {
+                // Initialize MediaPlayer with the custom beep sound
+                mediaPlayer = MediaPlayer.create(this, R.raw.beep); // Ensure 'beep.mp3' is in the 'res/raw' folder
+            }
+            if (!mediaPlayer.isPlaying()) {
+                mediaPlayer.start(); // Play the beep sound
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

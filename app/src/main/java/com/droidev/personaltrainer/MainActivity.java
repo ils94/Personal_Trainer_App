@@ -214,7 +214,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startRoundInterval() {
-        speak("Próxima rodada em breve");
 
         currentDisplayText = "Intervalo";
 
@@ -233,6 +232,8 @@ public class MainActivity extends AppCompatActivity {
                 startExercise();
             }
         }.start();
+
+        speak("Próxima rodada em breve");
     }
 
     private void togglePause() {

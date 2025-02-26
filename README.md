@@ -67,4 +67,4 @@ Contributions are welcome! To contribute:
 
 ## 📥 Download
 
-[Personal Trainer App](https://github.com/ils94/Personal_Trainer_App/releases/download/release-v3/Personal-Trainer.apk)
+[Personal Trainer App](https://github.com/ils94/Personal_Trainer_App/releases/download/release-v3/Personal-Trainer_v3.apk)

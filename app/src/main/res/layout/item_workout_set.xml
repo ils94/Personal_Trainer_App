@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:text="Nome do Conjunto"
+        android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -18,36 +19,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Exercícios"
+        android:textColor="@android:color/black"
         android:textSize="14sp" />
 
     <TextView
         android:id="@+id/exerciseTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tempo por exercício" />
+        android:text="Tempo por exercício"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/restTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Descanso" />
+        android:text="Descanso"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/roundsTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rodadas" />
+        android:text="Rodadas"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/roundIntervalTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Intervalo entre rodadas" />
+        android:text="Intervalo entre rodadas"
+        android:textColor="@android:color/black" />
 
     <TextView
         android:id="@+id/randomOrderTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ordem aleatória" />
+        android:text="Ordem aleatória"
+        android:textColor="@android:color/black" />
 
 </LinearLayout>

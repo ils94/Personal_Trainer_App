@@ -19,7 +19,7 @@
     <string name="rest_time">Rest</string>
     <string name="rounds">Rounds</string>
     <string name="round_interval">Interval between rounds</string>
-    <string name="interval">Intervalo</string>
+    <string name="interval">Break Time</string>
     <string name="random_order">Random order</string>
     <string name="starting_in_10_seconds">Starting in 10 seconds!</string>
     <string name="workout_finished">Workout Finished!</string>
@@ -36,7 +36,7 @@
     <string name="beep_error">Error playing beep sound.</string>
     <string name="confirm_stop">Confirm Stop</string>
     <string name="workout_sets_title">Workout Sets</string>
-    <string name="toast_selected_set">Workout: %1$s</string>
+    <string name="toast_selected_set">Workout:</string>
     <string name="dialog_remove_title">Remove Set</string>
     <string name="dialog_remove_message">Are you sure you want to remove the set?</string>
     <string name="dialog_remove_positive">Yes</string>
@@ -50,4 +50,11 @@
     <string name="toast_save_success">Settings saved!</string>
     <string name="toast_invalid_values">Please enter valid values!</string>
     <string name="action_workout_sets">Workout Sets</string>
+    <string name="workout_set_label">Workout:</string>
+    <string name="exercises_label">Exercises:</string>
+    <string name="exercise_time_label">Exercise Time:</string>
+    <string name="rest_time_label">Rest Time:</string>
+    <string name="rounds_label">Rounds:</string>
+    <string name="round_interval_label">Round Interval:</string>
+    <string name="random_order_label">Random Order:</string>
 </resources>

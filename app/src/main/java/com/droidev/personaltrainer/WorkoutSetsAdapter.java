@@ -47,46 +47,47 @@ public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.
         WorkoutSet workoutSet = workoutSets.get(position);
 
         // Formatar "Treino:" com negrito e cor preta
-        SpannableString treino = new SpannableString("Treino: " + workoutSet.getType());
-        treino.setSpan(new StyleSpan(Typeface.BOLD), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
-        treino.setSpan(new ForegroundColorSpan(Color.BLACK), 0, 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
+        SpannableString treino = new SpannableString(context.getString(R.string.workout_set_label) + " " + workoutSet.getType());
+        treino.setSpan(new StyleSpan(Typeface.BOLD), 0, context.getString(R.string.workout_set_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
+        treino.setSpan(new ForegroundColorSpan(Color.BLACK), 0, context.getString(R.string.workout_set_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
         holder.setNameTextView.setText(treino);
 
         // Formatar "Exercícios:" com negrito e cor preta
-        SpannableString exercicios = new SpannableString("Exercícios: " + workoutSet.getExercises());
-        exercicios.setSpan(new StyleSpan(Typeface.BOLD), 0, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
-        exercicios.setSpan(new ForegroundColorSpan(Color.BLACK), 0, 12, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
+        SpannableString exercicios = new SpannableString(context.getString(R.string.exercises_label) + " " + workoutSet.getExercises());
+        exercicios.setSpan(new StyleSpan(Typeface.BOLD), 0, context.getString(R.string.exercises_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
+        exercicios.setSpan(new ForegroundColorSpan(Color.BLACK), 0, context.getString(R.string.exercises_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
         holder.exercisesTextView.setText(exercicios);
 
         // Formatar "Tempo por exercício:" com negrito e cor preta
-        SpannableString tempoPorExercicio = new SpannableString("Tempo por exercício: " + workoutSet.getExerciseTime() + "s");
-        tempoPorExercicio.setSpan(new StyleSpan(Typeface.BOLD), 0, 20, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
-        tempoPorExercicio.setSpan(new ForegroundColorSpan(Color.BLACK), 0, 20, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
+        SpannableString tempoPorExercicio = new SpannableString(context.getString(R.string.exercise_time_label) + " " + workoutSet.getExerciseTime() + "s");
+        tempoPorExercicio.setSpan(new StyleSpan(Typeface.BOLD), 0, context.getString(R.string.exercise_time_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
+        tempoPorExercicio.setSpan(new ForegroundColorSpan(Color.BLACK), 0, context.getString(R.string.exercise_time_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
         holder.exerciseTimeTextView.setText(tempoPorExercicio);
 
         // Formatar "Descanso:" com negrito e cor preta
-        SpannableString descanso = new SpannableString("Descanso: " + workoutSet.getRestTime() + "s");
-        descanso.setSpan(new StyleSpan(Typeface.BOLD), 0, 9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
-        descanso.setSpan(new ForegroundColorSpan(Color.BLACK), 0, 9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
+        SpannableString descanso = new SpannableString(context.getString(R.string.rest_time_label) + " " + workoutSet.getRestTime() + "s");
+        descanso.setSpan(new StyleSpan(Typeface.BOLD), 0, context.getString(R.string.rest_time_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
+        descanso.setSpan(new ForegroundColorSpan(Color.BLACK), 0, context.getString(R.string.rest_time_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
         holder.restTimeTextView.setText(descanso);
 
         // Formatar "Rodadas:" com negrito e cor preta
-        SpannableString rodadas = new SpannableString("Rodadas: " + workoutSet.getRounds());
-        rodadas.setSpan(new StyleSpan(Typeface.BOLD), 0, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
-        rodadas.setSpan(new ForegroundColorSpan(Color.BLACK), 0, 8, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
+        SpannableString rodadas = new SpannableString(context.getString(R.string.rounds_label) + " " + workoutSet.getRounds());
+        rodadas.setSpan(new StyleSpan(Typeface.BOLD), 0, context.getString(R.string.rounds_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
+        rodadas.setSpan(new ForegroundColorSpan(Color.BLACK), 0, context.getString(R.string.rounds_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
         holder.roundsTextView.setText(rodadas);
 
         // Formatar "Intervalo entre rodadas:" com negrito e cor preta
-        SpannableString intervaloEntreRodadas = new SpannableString("Intervalo entre rodadas: " + workoutSet.getRoundInterval() + "s");
-        intervaloEntreRodadas.setSpan(new StyleSpan(Typeface.BOLD), 0, 21, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
-        intervaloEntreRodadas.setSpan(new ForegroundColorSpan(Color.BLACK), 0, 21, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
+        SpannableString intervaloEntreRodadas = new SpannableString(context.getString(R.string.round_interval_label) + " " + workoutSet.getRoundInterval() + "s");
+        intervaloEntreRodadas.setSpan(new StyleSpan(Typeface.BOLD), 0, context.getString(R.string.round_interval_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
+        intervaloEntreRodadas.setSpan(new ForegroundColorSpan(Color.BLACK), 0, context.getString(R.string.round_interval_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
         holder.roundIntervalTextView.setText(intervaloEntreRodadas);
 
         // Formatar "Ordem aleatória:" com negrito e cor preta
-        SpannableString ordemAleatoria = new SpannableString("Ordem aleatória: " + (workoutSet.isRandomOrder() ? "Sim" : "Não"));
-        ordemAleatoria.setSpan(new StyleSpan(Typeface.BOLD), 0, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
-        ordemAleatoria.setSpan(new ForegroundColorSpan(Color.BLACK), 0, 15, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
+        SpannableString ordemAleatoria = new SpannableString(context.getString(R.string.random_order_label) + " " + (workoutSet.isRandomOrder() ? context.getString(R.string.yes) : context.getString(R.string.no)));
+        ordemAleatoria.setSpan(new StyleSpan(Typeface.BOLD), 0, context.getString(R.string.random_order_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Negrito
+        ordemAleatoria.setSpan(new ForegroundColorSpan(Color.BLACK), 0, context.getString(R.string.random_order_label).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Cor preta
         holder.randomOrderTextView.setText(ordemAleatoria);
+
 
         // Configuração do clique
         holder.itemView.setOnClickListener(v -> {

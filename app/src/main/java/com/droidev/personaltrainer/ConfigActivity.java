@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -25,8 +26,9 @@ public class ConfigActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private Gson gson = new Gson(); // Instância do Gson para trabalhar com JSON
-    private ArrayList<String> workoutSets;
-    private String workoutSetToEdit; // Nome do conjunto que está sendo editado
+    private ArrayList<WorkoutSet> workoutSets; // Lista de WorkoutSet
+    private WorkoutSet workoutSetToEdit; // Conjunto que está sendo editado
+    private int editPosition = -1; // Posição do conjunto sendo editado
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,23 +52,41 @@ public class ConfigActivity extends AppCompatActivity {
         // Verifica se há um conjunto sendo editado
         Intent intent = getIntent();
         if (intent.hasExtra("workoutSet")) {
-            workoutSetToEdit = intent.getStringExtra("workoutSet");
-            exercisesInput.setText(workoutSetToEdit);
-        }
+            String workoutSetJson = intent.getStringExtra("workoutSet");
+            workoutSetToEdit = gson.fromJson(workoutSetJson, WorkoutSet.class);
 
-        // Carregar configurações anteriores
-        exerciseTimeInput.setText(String.valueOf(sharedPreferences.getInt("exerciseTime", 30)));
-        restTimeInput.setText(String.valueOf(sharedPreferences.getInt("restTime", 10)));
-        roundIntervalInput.setText(String.valueOf(sharedPreferences.getInt("roundInterval", 20)));
-        roundsInput.setText(String.valueOf(sharedPreferences.getInt("rounds", 3)));
-        randomOrderCheckbox.setChecked(sharedPreferences.getBoolean("randomOrder", false));
+            // Encontra a posição do conjunto na lista
+            editPosition = workoutSets.indexOf(workoutSetToEdit);
+
+            // Preenche os campos com os valores
+            exercisesInput.setText(workoutSetToEdit.getExercises());
+            exerciseTimeInput.setText(String.valueOf(workoutSetToEdit.getExerciseTime()));
+            restTimeInput.setText(String.valueOf(workoutSetToEdit.getRestTime()));
+            roundIntervalInput.setText(String.valueOf(workoutSetToEdit.getRoundInterval()));
+            roundsInput.setText(String.valueOf(workoutSetToEdit.getRounds()));
+            randomOrderCheckbox.setChecked(workoutSetToEdit.isRandomOrder());
+        }
 
         saveButton.setOnClickListener(v -> saveWorkoutSet());
     }
 
     private void loadWorkoutSets() {
         String json = sharedPreferences.getString("workoutSets", "[]");
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        Log.d("DEBUG", "JSON salvo: " + json);
+
+        // Verifica se o JSON está malformado (array de strings)
+        if (json.startsWith("[\"") && json.endsWith("\"]")) {
+            // Remove os colchetes e as aspas externas
+            json = json.substring(2, json.length() - 2);
+            // Substitui aspas escapadas por aspas normais
+            json = json.replace("\\\"", "\"");
+            // Converte para um array de JSON objects
+            json = "[" + json + "]";
+        }
+
+        // Parse o JSON para ArrayList<WorkoutSet>
+        Type type = new TypeToken<ArrayList<WorkoutSet>>() {
+        }.getType();
         workoutSets = gson.fromJson(json, type);
 
         if (workoutSets == null) {
@@ -75,7 +95,6 @@ public class ConfigActivity extends AppCompatActivity {
     }
 
     private void saveWorkoutSet() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
         String exercisesText = exercisesInput.getText().toString().trim();
 
         if (exercisesText.isEmpty()) {
@@ -88,27 +107,33 @@ public class ConfigActivity extends AppCompatActivity {
             int restTime = Integer.parseInt(restTimeInput.getText().toString());
             int roundInterval = Integer.parseInt(roundIntervalInput.getText().toString());
             int rounds = Integer.parseInt(roundsInput.getText().toString());
+            boolean randomOrder = randomOrderCheckbox.isChecked();
 
             if (exerciseTime <= 0 || restTime <= 0 || roundInterval < 0 || rounds <= 0) {
                 throw new NumberFormatException();
             }
 
-            // Remove o conjunto antigo se estiver editando
-            if (workoutSetToEdit != null) {
-                workoutSets.remove(workoutSetToEdit);
+            // Cria um novo objeto WorkoutSet
+            WorkoutSet workoutSet = new WorkoutSet();
+            workoutSet.setExercises(exercisesText);
+            workoutSet.setExerciseTime(exerciseTime);
+            workoutSet.setRestTime(restTime);
+            workoutSet.setRoundInterval(roundInterval);
+            workoutSet.setRounds(rounds);
+            workoutSet.setRandomOrder(randomOrder);
+
+            // Adiciona ou atualiza o conjunto na lista
+            if (editPosition != -1) {
+                // Atualiza o conjunto existente
+                workoutSets.set(editPosition, workoutSet);
+            } else {
+                // Adiciona um novo conjunto
+                workoutSets.add(workoutSet);
             }
 
-            // Adiciona o novo conjunto
-            workoutSets.add(exercisesText);
-
-            // Salva lista atualizada no SharedPreferences
+            // Salva a lista atualizada no SharedPreferences
+            SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("workoutSets", gson.toJson(workoutSets));
-            editor.putInt("exerciseTime", exerciseTime);
-            editor.putInt("restTime", restTime);
-            editor.putInt("roundInterval", roundInterval);
-            editor.putInt("rounds", rounds);
-            editor.putBoolean("randomOrder", randomOrderCheckbox.isChecked());
-
             editor.apply();
 
             Toast.makeText(this, "Configurações salvas!", Toast.LENGTH_SHORT).show();

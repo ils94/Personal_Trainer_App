@@ -14,18 +14,17 @@ import java.util.ArrayList;
 public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.ViewHolder> {
 
     private Context context;
-    private ArrayList<String> workoutSets;
-    private OnItemClickListener listener; // Interface para o listener de clique
+    private ArrayList<WorkoutSet> workoutSets;
+    private OnItemClickListener listener;
 
-    // Interface para o listener de clique
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
-    public WorkoutSetsAdapter(Context context, ArrayList<String> workoutSets, OnItemClickListener listener) {
+    public WorkoutSetsAdapter(Context context, ArrayList<WorkoutSet> workoutSets, OnItemClickListener listener) {
         this.context = context;
         this.workoutSets = workoutSets;
-        this.listener = listener; // Inicializa o listener
+        this.listener = listener;
     }
 
     @NonNull
@@ -37,10 +36,16 @@ public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String workoutSet = workoutSets.get(position);
-        holder.setNameTextView.setText(workoutSet);
+        WorkoutSet workoutSet = workoutSets.get(position);
 
-        // Configura o listener de clique no item
+        holder.setNameTextView.setText("Treino " + (position + 1));
+        holder.exercisesTextView.setText("Exercícios: " + workoutSet.getExercises());
+        holder.exerciseTimeTextView.setText("Tempo por exercício: " + workoutSet.getExerciseTime() + "s");
+        holder.restTimeTextView.setText("Descanso: " + workoutSet.getRestTime() + "s");
+        holder.roundsTextView.setText("Rodadas: " + workoutSet.getRounds());
+        holder.roundIntervalTextView.setText("Intervalo entre rodadas: " + workoutSet.getRoundInterval() + "s");
+        holder.randomOrderTextView.setText("Ordem aleatória: " + (workoutSet.isRandomOrder() ? "Sim" : "Não"));
+
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(position);
@@ -53,7 +58,7 @@ public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.
         return workoutSets.size();
     }
 
-    public void updateWorkoutSets(ArrayList<String> newWorkoutSets) {
+    public void updateWorkoutSets(ArrayList<WorkoutSet> newWorkoutSets) {
         this.workoutSets.clear();
         this.workoutSets.addAll(newWorkoutSets);
         notifyDataSetChanged();
@@ -65,11 +70,18 @@ public class WorkoutSetsAdapter extends RecyclerView.Adapter<WorkoutSetsAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView setNameTextView;
+        TextView setNameTextView, exercisesTextView, exerciseTimeTextView, restTimeTextView,
+                roundsTextView, roundIntervalTextView, randomOrderTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             setNameTextView = itemView.findViewById(R.id.setNameTextView);
+            exercisesTextView = itemView.findViewById(R.id.exercisesTextView);
+            exerciseTimeTextView = itemView.findViewById(R.id.exerciseTimeTextView);
+            restTimeTextView = itemView.findViewById(R.id.restTimeTextView);
+            roundsTextView = itemView.findViewById(R.id.roundsTextView);
+            roundIntervalTextView = itemView.findViewById(R.id.roundIntervalTextView);
+            randomOrderTextView = itemView.findViewById(R.id.randomOrderTextView);
         }
     }
 }

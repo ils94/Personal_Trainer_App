@@ -1,23 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/item_background"
-    android:foreground="?attr/selectableItemBackground"
-    android:orientation="horizontal"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/setNameTextView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center_vertical"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
         android:text="Nome do Conjunto"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/exercisesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exercícios"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/exerciseTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tempo por exercício" />
+
+    <TextView
+        android:id="@+id/restTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descanso" />
+
+    <TextView
+        android:id="@+id/roundsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rodadas" />
+
+    <TextView
+        android:id="@+id/roundIntervalTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Intervalo entre rodadas" />
+
+    <TextView
+        android:id="@+id/randomOrderTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ordem aleatória" />
+
 </LinearLayout>

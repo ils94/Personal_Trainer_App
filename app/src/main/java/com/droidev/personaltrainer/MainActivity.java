@@ -13,6 +13,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private String currentDisplayText = "";
     private SharedPreferences sharedPreferences;
     private MediaPlayer mediaPlayer;
+    private Gson gson = new Gson(); // Instância do Gson para trabalhar com JSON
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,23 +67,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSettings() {
-        String selectedSet = sharedPreferences.getString("selectedSet", "");
-        if (!selectedSet.isEmpty()) {
-            exercises = new ArrayList<>(Arrays.asList(selectedSet.split(",")));
+        // Carregar o JSON do conjunto selecionado
+        String selectedSetJson = sharedPreferences.getString("selectedSet", "");
+
+        if (!selectedSetJson.isEmpty()) {
+            // Converter o JSON para o objeto WorkoutSet usando o Gson
+            WorkoutSet selectedSet = gson.fromJson(selectedSetJson, WorkoutSet.class);
+
+            // Agora usa os valores do objeto WorkoutSet para preencher as variáveis
+            exercises = new ArrayList<>(Arrays.asList(selectedSet.getExercises().split(",")));
+            exerciseTime = selectedSet.getExerciseTime();
+            restTime = selectedSet.getRestTime();
+            roundInterval = selectedSet.getRoundInterval();
+            rounds = selectedSet.getRounds();
+            randomOrder = selectedSet.isRandomOrder();
+
+            // Se a ordem for aleatória, embaralha os exercícios
+            if (randomOrder) {
+                Collections.shuffle(exercises);
+            }
         } else {
+            // Se não encontrar o conjunto, usar os valores padrão
             String exercisesText = sharedPreferences.getString("exercises", "Exercício 1, Exercício 2");
             exercises = new ArrayList<>(Arrays.asList(exercisesText.split(",")));
-        }
-        exerciseTime = sharedPreferences.getInt("exerciseTime", 30);
-        restTime = sharedPreferences.getInt("restTime", 10);
-        roundInterval = sharedPreferences.getInt("roundInterval", 20);
-        rounds = sharedPreferences.getInt("rounds", 3);
-        randomOrder = sharedPreferences.getBoolean("randomOrder", false);
+            exerciseTime = sharedPreferences.getInt("exerciseTime", 30);
+            restTime = sharedPreferences.getInt("restTime", 10);
+            roundInterval = sharedPreferences.getInt("roundInterval", 20);
+            rounds = sharedPreferences.getInt("rounds", 3);
+            randomOrder = sharedPreferences.getBoolean("randomOrder", false);
 
-        if (randomOrder) {
-            Collections.shuffle(exercises);
+            if (randomOrder) {
+                Collections.shuffle(exercises);
+            }
         }
     }
+
 
     private void startWorkout() {
         if (countDownTimer != null) return;

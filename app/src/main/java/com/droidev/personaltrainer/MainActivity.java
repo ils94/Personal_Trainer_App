@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private MediaPlayer mediaPlayer;
     private final Gson gson = new Gson(); // Instância do Gson para trabalhar com JSON
+    MenuItem workoutSetsItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         currentExerciseIndex = 0;
         isPaused = false;
         timeRemaining = 0;
+        workoutSetsItem.setEnabled(false);
 
         initialCountDownTimer = new CountDownTimer(10000, 1000) {
             @Override
@@ -340,6 +342,7 @@ public class MainActivity extends AppCompatActivity {
                     startButton.setEnabled(true);
                     pauseButton.setText(getString(R.string.pause_button));
                     isPaused = false;
+                    workoutSetsItem.setEnabled(true);
                 })
                 .setNegativeButton(getString(R.string.no), (dialog, which) -> {
                     // Se o usuário cancelar, não faz nada e fecha o diálogo
@@ -388,6 +391,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        workoutSetsItem = menu.findItem(R.id.action_workout_sets);
         return true;
     }
 
